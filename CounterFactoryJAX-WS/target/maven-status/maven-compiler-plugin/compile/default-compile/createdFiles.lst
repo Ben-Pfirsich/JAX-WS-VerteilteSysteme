@@ -1,4 +1,4 @@
 de/fhac/ws/CounterServiceImpl.class
 de/fhac/ws/CounterService.class
-de/fhac/ws/StatefulCounterFactoryService.class
 de/fhac/ws/StatefulCounterFactoryImpl.class
+de/fhac/ws/StatefulCounterFactoryService.class

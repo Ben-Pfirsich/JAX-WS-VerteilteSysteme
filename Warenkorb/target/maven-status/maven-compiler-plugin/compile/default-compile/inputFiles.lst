@@ -1,0 +1,5 @@
+/home/bp1186s@ad.fh-aachen.de/VS-Projekte/JAX-WS-VerteilteSysteme/Warenkorb/src/main/java/de/fhac/ws/impl/WarenkorbImpl.java
+/home/bp1186s@ad.fh-aachen.de/VS-Projekte/JAX-WS-VerteilteSysteme/Warenkorb/src/main/java/de/fhac/ws/entity/Artikel.java
+/home/bp1186s@ad.fh-aachen.de/VS-Projekte/JAX-WS-VerteilteSysteme/Warenkorb/src/main/java/de/fhac/ws/interfaces/Warenkorb.java
+/home/bp1186s@ad.fh-aachen.de/VS-Projekte/JAX-WS-VerteilteSysteme/Warenkorb/src/main/java/de/fhac/ws/interfaces/WarenkorbFactory.java
+/home/bp1186s@ad.fh-aachen.de/VS-Projekte/JAX-WS-VerteilteSysteme/Warenkorb/src/main/java/de/fhac/ws/impl/WarenkorbFactoryImpl.java

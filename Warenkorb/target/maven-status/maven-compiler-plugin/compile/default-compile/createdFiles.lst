@@ -1,0 +1,5 @@
+de/fhac/ws/interfaces/WarenkorbFactory.class
+de/fhac/ws/entity/Artikel.class
+de/fhac/ws/interfaces/Warenkorb.class
+de/fhac/ws/impl/WarenkorbImpl.class
+de/fhac/ws/impl/WarenkorbFactoryImpl.class

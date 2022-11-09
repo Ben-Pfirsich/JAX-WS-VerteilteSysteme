@@ -27,5 +27,8 @@ public class Main {
         warenkorb.removeArtikel(1);
         warenkorb.addArtikel(0);
         System.out.println(warenkorb.showWarenkorb());
+
+        warenkorb.addArtikel(1);
+        System.out.println(warenkorb.showWarenkorb());
     }
 }

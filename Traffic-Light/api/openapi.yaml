@@ -1,0 +1,508 @@
+openapi: 3.0.2
+info:
+  title: Traffic Lights
+  version: 1.0.0
+servers:
+- url: http://149.201.190.76:8000
+security:
+- basicAuth: []
+paths:
+  /: {}
+  /streets:
+    get:
+      description: Traffic Lights available streets will be returned
+      operationId: getAvailableStreets
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAvailableStreets_200_response'
+          description: Returned Traffic Lights streets successfully.
+        "401":
+          description: Retrieving traffic lights status failed (unauthorized).
+      summary: Traffic Lights available streets
+      x-accepts: application/json
+  /streets/{street}:
+    get:
+      description: Current Traffic Lights status of the specified street will be returned.
+      operationId: getTrafficLightsStatus
+      parameters:
+      - description: Street whose corresponding traffic lights status will be returned.
+        explode: false
+        in: path
+        name: street
+        required: true
+        schema:
+          default: Mozartstrasse
+          enum:
+          - Mozartstrasse
+          - Schillerstrasse
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTrafficLightsStatus_200_response'
+          description: Returned Traffic Lights status successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getTrafficLightsStatus_400_response'
+          description: Retrieving traffic lights status failed.
+        "401":
+          description: Retrieving traffic lights status failed (unauthorized).
+      summary: Traffic Lights status
+      x-accepts: application/json
+  /streets/{street}/colors/{color}:
+    post:
+      description: Controls the traffic lights of the specified street.
+      operationId: controlTrafficLights
+      parameters:
+      - description: Street whose corresponding traffic lights will be controlled.
+        explode: false
+        in: path
+        name: street
+        required: true
+        schema:
+          default: Mozartstrasse
+          enum:
+          - Mozartstrasse
+          - Schillerstrasse
+          type: string
+        style: simple
+      - description: Traffic Lights color.
+        explode: false
+        in: path
+        name: color
+        required: true
+        schema:
+          default: green
+          enum:
+          - green
+          - red
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTrafficLights_200_response'
+          description: Switching traffic lights status successfully worked.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTrafficLights_400_response'
+          description: Switching traffic lights status failed.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTrafficLights_401_response'
+          description: Switching traffic lights status  failed (unauthorized).
+      summary: Controls the traffic lights
+      x-accepts: application/json
+  /streets/{street}/colors/{color}/time:
+    post:
+      description: Schedules the controlling of the traffic lights of the specified
+        street to green or red.
+      operationId: scheduleTrafficLightsControl
+      parameters:
+      - explode: false
+        in: path
+        name: street
+        required: true
+        schema:
+          default: Mozartstrasse
+          enum:
+          - Mozartstrasse
+          - Schillerstrasse
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: color
+        required: true
+        schema:
+          default: green
+          enum:
+          - green
+          - red
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/scheduleTrafficLightsControl_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTrafficLights_401_response'
+          description: Switching traffic lights status successfully worked.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTrafficLights_400_response'
+          description: Switching traffic lights status failed.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTrafficLights_401_response'
+          description: Switching traffic lights status  failed (unauthorized).
+      summary: Scheduled control of the traffic lights
+      x-content-type: multipart/form-data
+      x-accepts: application/json
+  /times:
+    get:
+      description: Returns all scheduled traffic lights events
+      operationId: getAllScheduledTrafficLightsEvents
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAllScheduledTrafficLightsEvents_200_response'
+          description: Retrieving scheduled events successfully worked.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAllScheduledTrafficLightsEvents_401_response'
+          description: Retrieving scheduled events failed (unauthorized).
+      summary: Returns all scheduled traffic lights events
+      x-accepts: application/json
+  /users:
+    get:
+      description: All registered Users will be retrieved (admin only).
+      operationId: getAllUsers
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties:
+                    $ref: '#/components/schemas/getAllUsers_200_response_inner_value'
+                  type: object
+                type: array
+          description: Returned users successfully.
+        "401":
+          description: Retrieving all users failed (unauthorized).
+      summary: Retrieve all users
+      x-accepts: application/json
+    put:
+      description: New User will be added
+      operationId: addUser
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/addUser_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addUser_200_response'
+          description: User successfully added.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addUser_200_response'
+          description: Adding user failed (unauthorized).
+      summary: Add new user
+      x-content-type: multipart/form-data
+      x-accepts: application/json
+  /users/session:
+    delete:
+      description: User will be logged out.
+      operationId: logoutUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logoutUser_200_response'
+          description: User successfully logged out.
+        "401":
+          description: unauthorized.
+      summary: User logout
+      x-accepts: application/json
+    post:
+      description: User login. New session will be started.
+      operationId: loginUser
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/loginUser_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginUser_200_response'
+          description: User successfully logged in.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginUser_401_response'
+          description: User login failed (unauthorized).
+      summary: User login
+      x-content-type: multipart/form-data
+      x-accepts: application/json
+  /users/status:
+    get:
+      description: "User's role will be returned (admin 0, user 1, none -1)."
+      operationId: getUserRole
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getUserRole_200_response'
+          description: Returned users successfully.
+      summary: Retrieve User status (role)
+      x-accepts: application/json
+  /users/{id}:
+    delete:
+      description: User with id will be deleted.
+      operationId: deleteUser
+      parameters:
+      - description: Users ID (Username)
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteUser_200_response'
+          description: User successfully deleted.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteUser_200_response'
+          description: Deleting user failed (unauthorized).
+      summary: Delete existing user
+      x-accepts: application/json
+components:
+  schemas:
+    addUser_request:
+      properties:
+        password:
+          description: The password for register.
+          type: string
+        role:
+          description: The user's role for register.
+          type: string
+        username:
+          description: The username for register.
+          type: string
+      type: object
+    controlTrafficLights_200_response:
+      example:
+        street: street
+        success: true
+      properties:
+        street:
+          description: specified street
+          type: string
+        success:
+          description: result status of traffic lights
+          type: boolean
+      type: object
+    getAllScheduledTrafficLightsEvents_401_response:
+      properties:
+        success:
+          description: success indicates if retrieving scheduled events worked.
+          type: boolean
+      type: object
+    deleteUser_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          description: success indicates if deleting user worked.
+          type: boolean
+      type: object
+    controlTrafficLights_401_response:
+      example:
+        success: true
+      properties:
+        success:
+          description: success indicates if controlling traffic lights worked.
+          type: boolean
+      type: object
+    getAllUsers_200_response_inner_value:
+      example:
+        role: 6
+        id: 0
+        username: username
+      properties:
+        id:
+          description: Id
+          type: integer
+        role:
+          description: "Role (admin 0, user 1, none -1)"
+          type: integer
+        username:
+          description: Username
+          type: string
+    getTrafficLightsStatus_400_response:
+      properties:
+        errormsg:
+          description: Error message.
+          type: string
+        success:
+          description: success indicates if retrieving traffic lights status worked.
+          type: boolean
+      type: object
+    addUser_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          description: success indicates if adding user worked.
+          type: boolean
+      type: object
+    getUserRole_200_response:
+      example:
+        role: 0
+      properties:
+        role:
+          description: "Role (admin 0, user 1, none -1)"
+          type: integer
+      type: object
+    getTrafficLightsStatus_200_response:
+      example:
+        street: street
+        state: state
+      properties:
+        state:
+          description: result status of traffic lights
+          type: string
+        street:
+          description: specified street
+          type: string
+      type: object
+    logoutUser_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          description: success indicates if logout worked.
+          type: boolean
+      type: object
+    controlTrafficLights_400_response:
+      properties:
+        errormsg:
+          description: Error message.
+          type: string
+        success:
+          description: success indicates if switching traffic lights status worked.
+          type: boolean
+      type: object
+    getAllScheduledTrafficLightsEvents_200_response:
+      example:
+        hours: hours
+        seconds: seconds
+        color: color
+        month: month
+        year: year
+        minutes: minutes
+        street: street
+        day: day
+      properties:
+        color:
+          type: string
+        day:
+          type: string
+        hours:
+          type: string
+        minutes:
+          type: string
+        month:
+          type: string
+        seconds:
+          type: string
+        street:
+          type: string
+        year:
+          type: string
+      type: object
+    loginUser_401_response:
+      properties:
+        errormsg:
+          description: Error message.
+          type: string
+        success:
+          description: success indicates if login worked.
+          type: boolean
+      type: object
+    getAvailableStreets_200_response:
+      example:
+        streets: "{}"
+      properties:
+        streets:
+          description: available streets
+          type: object
+      type: object
+    loginUser_request:
+      properties:
+        password:
+          description: The password for login.
+          type: string
+        username:
+          description: The username for login.
+          type: string
+      type: object
+    loginUser_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          description: success indicates if login worked.
+          type: boolean
+      type: object
+    scheduleTrafficLightsControl_request:
+      properties:
+        day:
+          type: integer
+        hours:
+          type: integer
+        minutes:
+          type: integer
+        month:
+          type: integer
+        seconds:
+          type: integer
+        year:
+          type: integer
+      type: object
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http
+

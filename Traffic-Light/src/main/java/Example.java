@@ -8,7 +8,7 @@ import org.openapitools.client.api.DefaultApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("http://149.201.190.76:8000");
+        defaultClient.setBasePath("http://149.201.190.77:8000");
 
         // Configure HTTP basic authorization: basicAuth
         HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");

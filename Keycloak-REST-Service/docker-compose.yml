@@ -1,0 +1,35 @@
+version: "2"
+
+# important information: postgres has to be started before keycloak!
+# docker-compose down
+# docker-compose up -d postgres
+# docker-compose logs -f postgres # check if ready
+# docker-compose up -d keycloak
+# docker-compose logs -f keycloak
+# docker-compose down --volumes # only if you want to delete database data as well
+services:
+  keycloak:
+    image: jboss/keycloak:15.0.2
+    environment:
+      - KEYCLOAK_USER=user
+      - KEYCLOAK_PASSWORD=password
+      - DB_ADDR=postgres
+      - DB_PASSWORD=db_password
+      - DB_VENDOR=postgres
+      - DB_USER=keycloak
+    ports:
+      # tomcat runs also on 8080 --> so choose a different port
+      - "8085:8080"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:12
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=db_password
+      - POSTGRES_DB=keycloak
+    restart: always
+volumes:
+  postgres-data:
